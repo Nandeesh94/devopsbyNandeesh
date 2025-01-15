@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# STEP-1: Install Git, Java 1.8, Java 17, and Maven
+echo "Installing Git, Java 1.8, Java 17, and Maven..."
+yum install git java-1.8.0-openjdk-devel -y
+amazon-linux-extras enable corretto17
+yum install java-17-amazon-corretto-devel maven -y
+
+# Verify Java and Maven installation
+echo "Java Versions Installed:"
+java -version
+echo "Maven Version Installed:"
+mvn -version
+
+# STEP-2: Add Jenkins Repository and Import GPG Key
+echo "Adding Jenkins repository..."
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+# STEP-3: Install Jenkins
+echo "Installing Jenkins..."
+yum install jenkins -y
+
+# STEP-4: Configure Default Java for Jenkins
+echo "Setting Java 17 as the default for Jenkins..."
+update-alternatives --config java <<< '2' # Automatically select Java 17 (adjust number based on the options)
+
+# STEP-5: Start and Enable Jenkins Service
+echo "Starting and enabling Jenkins service..."
+systemctl start jenkins.service
+systemctl enable jenkins.service
+
+# STEP-6: Check Jenkins Status
+echo "Checking Jenkins status..."
+systemctl status jenkins.service
+
+# Jenkins Initial Admin Password Location
+echo "Jenkins is installed! Access Jenkins at http://<your-server-ip>:8080"
+echo "The initial admin password is located at /var/lib/jenkins/secrets/initialAdminPassword"
