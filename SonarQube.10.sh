@@ -1,28 +1,32 @@
 #!/bin/bash
 # Update and install required packages
 
-sudo yum update -y
-sudo amazon-linux-extras enable corretto17
-sudo yum install java-17-amazon-corretto -y
-sudo yum install wget unzip -y
+#sudo yum update -y
+#sudo amazon-linux-extras enable corretto17
+#sudo yum install java-17-amazon-corretto -y
+#sudo yum install wget unzip -y
 
 # Download and install SonarQube
 cd /opt/
 sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.2.0.77652.zip
 sudo unzip sonarqube-10.2.0.77652.zip
+sudo yum install java-17-amazon-corretto -y
 sudo useradd sonar
 sudo chown sonar:sonar sonarqube-10.2.0.77652 -R
-sudo chmod -R 777 sonarqube-10.2.0.77652
-
-# Switch to the sonar user
-sudo su - sonar 
+sudo chmod 777 sonarqube-10.2.0.77652 -R
+su - sonar 
 cd /opt
 cd sonarqube-10.2.0.77652/bin/linux-x86-64/
 ./sonar.sh start
+./sonar status
+
+#run this on server manually
+#sh /opt/sonarqube-10.2.0.77652/bin/linux-x86-64/sonar.sh start
+#echo "user=admin & password=admin
 
 # Print the status of SonarQube
-sudo su - sonar -c sonarqube-10.2.0.77652/bin/linux-x86-64/sonar.sh start
-sudo su - sonar -c sonarqube-10.2.0.77652/bin/linux-x86-64/sonar.sh status
+#sudo su - sonar -c sonarqube-10.2.0.77652/bin/linux-x86-64/sonar.sh start
+#sudo su - sonar -c sonarqube-10.2.0.77652/bin/linux-x86-64/sonar.sh status
 
 # Instructions to access SonarQube
 #echo "--------------------------------------------------"
