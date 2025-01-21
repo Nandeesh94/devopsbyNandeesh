@@ -13,6 +13,8 @@ sudo ln -sf /opt/apache-maven-3.9.9/bin/mvn /usr/bin/mvn
 #Specify the installation path: /opt/apache-maven-3.9.9.
 #Save the configuration.
 
+#NOTE.
+#slave server also suppoting amazon-linux-extras enable corretto17
 
 #STEP-2: GETTING THE REPO (jenkins.io --> download -- > redhat)
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
