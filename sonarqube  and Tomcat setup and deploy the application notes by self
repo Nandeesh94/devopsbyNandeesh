@@ -62,3 +62,65 @@ pipeline {
         }
     }
 }
+
+
+
+====================================================================================================================================
+
+Tomcat setup and deploy the application.
+
+pipeline {
+    agent {
+        label 'slave3'
+    }
+    
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/Nandeesh94/jenkins-java-project.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('code-quality') {
+            steps {
+                sh '''mvn sonar:sonar \
+                    -Dsonar.projectKey=netflix1 \
+                    -Dsonar.host.url=http://54.196.189.97:9000 \
+                    -Dsonar.login=180ca38d5576c525d78c6b67ef4498ebcce63b91'''
+            }
+        }
+        stage('artifact') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('deploy') {
+            steps {
+                deploy(
+                    adopters: [
+                        tomcat9(
+                            credentialsId: '849e764e-9850-44e8-b0c4-cfb48bdfcba6',
+                            path: '',
+                            url: 'http://174.129.66.68:8081/'
+                        )
+                    ],
+                    contextPath: 'Netflix1',
+                    war: 'target/*.war'
+                )
+            }
+        }
+    }
+}
+
+
+
+
