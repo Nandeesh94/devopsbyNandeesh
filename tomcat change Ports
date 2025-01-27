@@ -1,0 +1,19 @@
+If you get a 401 error, proceed to the next steps.
+if in case 4-5 times did the wrong in tomcat setup then Clear Browser Cache or Test in Incognito Mode
+Sometimes, cached credentials or cookies can cause conflicts. Try the following:
+Clear your browser cache/Access the Manager App in Incognito/Private Mode.
+
+2. Check Logs for Errors
+tail -f apache-tomcat-9.0.98/logs/catalina.out
+ctrl +c
+netstat -tuln | grep 8080
+sudo kill -9 <pid>
+vim apache-tomcat-9.0.98/conf/server.xml
+ <Connector port="8080" protocol="HTTP/1.1" #change the port no 8080 to 8081
+               connectionTimeout="20000"
+               redirectPort="8443"
+               maxParameterCount="1000"
+:wq
+3.Restart Tomcat:
+sh apache-tomcat-9.0.98/bin/shutdown.sh
+sh apache-tomcat-9.0.98/bin/startup.sh
